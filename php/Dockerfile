@@ -1,11 +1,22 @@
 FROM php:5.6-fpm
 FROM php:alpine AS cacert
 
-COPY --from=cacert /etc/ssl /root/ssl
+RUN apk update && apk add --no-cache imagemagick-dev libtool make g++
 
-RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
-  && pear update-channels \
-  && pear upgrade
+RUN wget https://github.com/ImageMagick/ImageMagick6/archive/refs/tags/6.9.12-28.tar.gz && \
+     tar -xzf 6.9.12-28.tar.gz && \
+     cd ImageMagick6-6.9.12-28 && \
+     ./configure && \
+     make && \
+     make install
+
+RUN wget https://pecl.php.net/get/imagick-3.4.4.tgz && \
+     tar -xzf imagick-3.4.4.tgz && \
+     cd imagick-3.4.4 && \
+     phpize && \
+     ./configure --with-imagick=/usr/local && \
+     make && \
+     make install
 
 RUN pecl install imagick;
 
