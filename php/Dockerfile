@@ -10,8 +10,5 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install imagick && \
     docker-php-ext-enable imagick
 
-RUN apt-get update \
-&& apt-get -y install imagick
-
 EXPOSE 9000
 CMD ["php-fpm"]
