@@ -1,8 +1,5 @@
 FROM ubuntu:18.04
 
-RUN apt-get update && apt-get install -y \
-    libmagickwand-dev --no-install-recommends \
-    && pecl install imagick
 
 RUN apt-get update \
     && apt-get install -y software-properties-common \
@@ -12,6 +9,10 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata \
     && apt-get install -y php5.6 php-fpm php5-dev php-pear \
     && apt-get install -y php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml
+
+RUN apt-get install -y \
+    libmagickwand-dev --no-install-recommends \
+    && pecl install imagick
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
