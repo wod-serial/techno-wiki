@@ -34,7 +34,12 @@ RUN set -eux; \
     # cleanup
     rm -rf /var/lib/apt/lists/*
 
-RUN pecl config-set "disable-tls" "yes"
+
+COPY --from=cacert /etc/ssl /root/ssl
+
+RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
+  && pear update-channels \
+  && pear upgrade
 
 RUN pecl install imagick;
 
