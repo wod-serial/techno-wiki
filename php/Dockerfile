@@ -11,11 +11,6 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install mbstring
 
-RUN apt-get update; \
-    apt-get install -y libmagickwand-dev; \
-    pecl install imagick;
-
-
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
 
