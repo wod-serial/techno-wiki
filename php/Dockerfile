@@ -12,7 +12,7 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install mbstring
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions apc
+    install-php-extensions apcu
 
 EXPOSE 9000
 CMD ["php-fpm"]
