@@ -1,5 +1,8 @@
 FROM php:5.6-fpm
 
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+
 RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-configure mysql --with-mysql=mysqlnd && \
@@ -9,6 +12,9 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install mbstring && \
     docker-php-ext-enable apc && \
     docker-php-ext-enable apcu
+
+RUN chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions apc
 
 EXPOSE 9000
 CMD ["php-fpm"]
