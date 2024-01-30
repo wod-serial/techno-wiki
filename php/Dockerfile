@@ -2,6 +2,8 @@ FROM php:alpine AS cacert
 
 FROM php:5.6-fpm-alpine
 
+ # сертификаты в старом имадже протухли, так что воруем их из более нового
+
 COPY --from=cacert /etc/ssl /root/ssl
 
 RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
