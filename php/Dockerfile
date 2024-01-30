@@ -7,7 +7,7 @@ RUN apt-get update \
     && add-apt-repository ppa:ondrej/php \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata \
-    && apt-get install -y php5.6 php-fpm  php5.6-dev php-pear \
+    && apt-get install -y php5.6 php-fpm php-pear \
     && apt-get install -y php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml
 
 RUN apt-get install -y \
