@@ -34,6 +34,8 @@ RUN set -eux; \
     # cleanup
     rm -rf /var/lib/apt/lists/*
 
+RUN pecl config-set "disable-tls" "yes"
+
 RUN pecl install imagick;
 
 EXPOSE 9000
