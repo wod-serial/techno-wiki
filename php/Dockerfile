@@ -1,7 +1,6 @@
 FROM php:5.6-fpm
-FROM php:alpine AS cacert
 
-RUN apk update && apk add --no-cache imagemagick-dev libtool make g++
+RUN apt update && apt add --no-cache imagemagick-dev libtool make g++
 
 RUN wget https://github.com/ImageMagick/ImageMagick6/archive/refs/tags/6.9.12-28.tar.gz && \
      tar -xzf 6.9.12-28.tar.gz && \
