@@ -1,6 +1,4 @@
-FROM php:7.1-jessie
-
-
+FROM php:7.2-buster
 
 RUN apt-get update && apt-get install -y \
     libmagickwand-dev --no-install-recommends \
