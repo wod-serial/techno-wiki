@@ -11,10 +11,10 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install mbstring
 
-RUN apt-get install -y \
-    imagemagick libmagickwand-dev --no-install-recommends \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick
+RUN apt-get update; \
+    apt-get install -y libmagickwand-dev; \
+    pecl install imagick; \
+    docker-php-ext-enable imagick;
 
 EXPOSE 9000
 CMD ["php-fpm"]
