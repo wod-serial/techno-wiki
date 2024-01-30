@@ -14,34 +14,22 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
 
-#
-#--------------------------------------------------------------------------
-# Software's Installation
-#--------------------------------------------------------------------------
-#
-# Installing tools and PHP extentions using "apt", "docker-php", "pecl",
-#
+RUN wget https://github.com/ImageMagick/ImageMagick6/archive/refs/tags/6.9.12-28.tar.gz && \
+     tar -xzf 6.9.12-28.tar.gz && \
+     cd ImageMagick6-6.9.12-28 && \
+     ./configure && \
+     make && \
+     make install
 
-# Install "curl", "libmemcached-dev", "libpq-dev", "libjpeg-dev",
-#         "libpng12-dev", "libfreetype6-dev", "libssl-dev", "libmcrypt-dev",
-RUN set -eux; \
-    sed -i 's/^deb /# deb /g' /etc/apt/sources.list; \
-    echo 'deb http://archive.debian.org/debian/ stretch main contrib non-free' >> /etc/apt/sources.list; \
-    apt-get update; \
-    apt-get upgrade -y; \
-    apt-get install -y --no-install-recommends \
-            libmagickwand-dev; \
-    # cleanup
-    rm -rf /var/lib/apt/lists/*
+RUN wget https://pecl.php.net/get/imagick-3.4.4.tgz && \
+     tar -xzf imagick-3.4.4.tgz && \
+     cd imagick-3.4.4 && \
+     phpize && \
+     ./configure --with-imagick=/usr/local && \
+     make && \
+     make install
 
-
-COPY --from=cacert /etc/ssl /root/ssl
-
-RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
-  && pear update-channels \
-  && pear upgrade
-
-RUN pecl install imagick;
+RUN echo "extension=imagick.so" > /usr/local/etc/php/conf.d/imagick.ini
 
 EXPOSE 9000
 CMD ["php-fpm"]
