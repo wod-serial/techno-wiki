@@ -9,9 +9,7 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install mysql && \
     docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-install mysqli && \
-    docker-php-ext-install mbstring && \
-    docker-php-ext-enable apc && \
-    docker-php-ext-enable apcu
+    docker-php-ext-install mbstring
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions apc
