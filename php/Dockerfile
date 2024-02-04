@@ -10,6 +10,11 @@ RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/s
   && pear update-channels \
   && pear upgrade
 
+
+RUN apk add ssmtp && \
+  echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf && \
+  echo 'sendmail_path = "/usr/sbin/ssmtp -t"' > /usr/local/etc/php/conf.d/mail.ini
+
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
     && docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
