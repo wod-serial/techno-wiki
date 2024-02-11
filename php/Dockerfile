@@ -23,7 +23,7 @@ RUN apk add --no-cache --virtual .build-deps gettext-dev \
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool \
     && apk add --no-cache imagemagick mysql-client \
-    && pecl install imagick &&  \
+    && pecl install imagick  \
     && docker-php-ext-enable imagick \
     && rm -rf /tmp/pear \
     && docker-php-ext-install -j$(nproc) pdo_mysql mysql mysqli zip \
