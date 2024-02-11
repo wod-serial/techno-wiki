@@ -8,12 +8,7 @@ COPY --from=cacert /etc/ssl /root/ssl
 
 RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
   && pear update-channels \
-  && pear upgrade
-
-
-RUN apk add ssmtp && \
-  echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf && \
-  echo 'sendmail_path = "/usr/sbin/ssmtp -t"' > /usr/local/etc/php/conf.d/mail.ini
+  && pear upgrade && pear install Mail Mail_Mime
 
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
     && docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ \
@@ -28,7 +23,7 @@ RUN apk add --no-cache --virtual .build-deps gettext-dev \
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool \
     && apk add --no-cache imagemagick mysql-client \
-    && pecl install imagick \
+    && pecl install imagick &&  \
     && docker-php-ext-enable imagick \
     && rm -rf /tmp/pear \
     && docker-php-ext-install -j$(nproc) pdo_mysql mysql mysqli zip \
