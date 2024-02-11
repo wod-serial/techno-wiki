@@ -8,7 +8,7 @@ COPY --from=cacert /etc/ssl /root/ssl
 
 RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
   && pear update-channels \
-  && pear upgrade && pear install Mail Mail_Mime
+  && pear upgrade && pear install Mail Mail_Mime Net_SMTP
 
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
     && docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ \
