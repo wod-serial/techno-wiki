@@ -31,8 +31,15 @@ docker exec CONTAINER /usr/bin/mysqldump -u tc --password=ПАРОЛЬ tc > back
 ```
 
 ### Импорт SQL бэкапа
+
 ```bash
 cat backup.sql | docker exec -i techno-wiki-mysql mysql -utc -pПАРОЛЬ tc
+```
+
+### Запуск служебных скриптов
+
+```bash
+docker exec -i 80472b58d2d2 php /var/www/public_html/maintenance/rebuildImages.php
 ```
 
 ### Тома этой конфигурации (volumes)
