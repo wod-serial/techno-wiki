@@ -25,7 +25,7 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick
     && pecl install imagick  \
     && docker-php-ext-enable imagick \
     && rm -rf /tmp/pear \
-    && docker-php-ext-install -j$(nproc) pdo_mysql mysql mysqli zip \
+    && docker-php-ext-install -j$(nproc) pdo_mysql mysqli zip \
     && apk del -f .build-deps
 
 RUN apk add --no-cache libmemcached-libs zlib \
