@@ -32,7 +32,7 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick
 
 RUN apk add --no-cache libmemcached-libs zlib \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS zlib-dev libmemcached-dev \
-    && pecl install memcached-2.2.0 \
+    && pecl install memcached-3.2.0 \
     && docker-php-ext-enable memcached \
     && apk del -f .build-deps
 
