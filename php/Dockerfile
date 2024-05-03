@@ -20,12 +20,14 @@ RUN apk add --no-cache --virtual .build-deps gettext-dev \
     && docker-php-ext-install -j$(nproc) gettext \
     && apk del -f .build-deps
 
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool libzip5 \
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool zlib-dev \
+    && docker-php-ext-configure zip --with-libzip \
+    && docker-php-ext-install zip \
     && apk add --no-cache imagemagick mysql-client \
     && pecl install imagick  \
     && docker-php-ext-enable imagick \
     && rm -rf /tmp/pear \
-    && docker-php-ext-install -j$(nproc) pdo_mysql mysqli zip \
+    && docker-php-ext-install -j$(nproc) pdo_mysql mysqli \
     && apk del -f .build-deps
 
 RUN apk add --no-cache libmemcached-libs zlib \
