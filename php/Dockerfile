@@ -11,7 +11,7 @@ RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/s
   && pear install Mail Mail_Mime Net_SMTP
 
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev \
-    && docker-php-ext-configure gd --enable-gd --with-webp --with-jpeg --with-xpm --with-freetype \
+    && docker-php-ext-configure gd --enable-gd --with-webp --with-jpeg --with-freetype \
     && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
     && docker-php-ext-install -j${NPROC} gd \
     && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
