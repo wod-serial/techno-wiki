@@ -45,3 +45,8 @@ RUN set -ex \
     && apk --no-cache add icu icu-dev icu-libs \
     && docker-php-ext-install -j$(nproc) intl \
     && apk del icu-dev
+
+RUN rm /usr/local/etc/php-fpm.d/*
+COPY php-fpm.d/www.conf /usr/local/etc/php-fpm.d/
+#RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+COPY php.ini /usr/local/etc/php

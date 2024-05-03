@@ -2,11 +2,10 @@ version: '3.9'
 services:
 
   php:
-    image: ghcr.io/wod-serial/techno-wiki:0.0.43
+    image: ghcr.io/wod-serial/techno-wiki:0.0.48
     volumes:
       - home:/var/www/public_html:rw
       - images:/var/www/images:rw
-      - php-config:/usr/local/etc/php-fpm.d:ro
     container_name: php
     restart: unless-stopped
     tty: true
@@ -69,7 +68,6 @@ volumes:
   images:
   mysql:
   nginx-config:
-  php-config:
 
 networks:
   tc-network:
