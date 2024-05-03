@@ -23,7 +23,7 @@ RUN apk add --no-cache --virtual .build-deps gettext-dev \
     && docker-php-ext-install -j$(nproc) gettext \
     && apk del -f .build-deps
 
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool zlib-dev libzip5 libgomp \
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool zlib-dev libgomp zip \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip \
     && docker-php-ext-install calendar && docker-php-ext-enable calendar \
