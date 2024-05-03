@@ -6,6 +6,9 @@ FROM php:7.4-fpm-alpine
 
 COPY --from=cacert /etc/ssl /root/ssl
 
+#mediawiki нужен composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
 RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
   && pear update-channels \
   && pear install Mail Mail_Mime Net_SMTP
@@ -23,6 +26,7 @@ RUN apk add --no-cache --virtual .build-deps gettext-dev \
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool zlib-dev \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip \
+    && docker-php-ext-install calendar && docker-php-ext-enable calendar \
     && apk add --no-cache imagemagick mysql-client \
     && pecl install imagick  \
     && docker-php-ext-enable imagick \
