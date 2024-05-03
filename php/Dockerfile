@@ -1,6 +1,6 @@
 FROM php:alpine AS cacert
 
-FROM php:5.6-fpm-alpine
+FROM php:7.4-fpm-alpine
 
  # сертификаты в старом имадже протухли, так что воруем их из более нового
 
@@ -27,12 +27,6 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick
     && docker-php-ext-enable imagick \
     && rm -rf /tmp/pear \
     && docker-php-ext-install -j$(nproc) pdo_mysql mysql mysqli zip \
-    && apk del -f .build-deps
-
-RUN apk add --no-cache --virtual .build-deps g++ make autoconf \
-    && pecl install -o -f redis-4.3.0 \
-    && docker-php-ext-enable redis \
-    && rm -rf /tmp/pear \
     && apk del -f .build-deps
 
 RUN apk add --no-cache libmemcached-libs zlib \
