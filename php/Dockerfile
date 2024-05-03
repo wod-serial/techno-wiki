@@ -23,9 +23,14 @@ RUN apk add --no-cache --virtual .build-deps gettext-dev \
     && docker-php-ext-install -j$(nproc) gettext \
     && apk del -f .build-deps
 
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool zlib-dev libgomp zip \
+RUN apk add \
+        libzip-dev \
+        zip \
+        zlib-dev \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install zip \
+    && docker-php-ext-install zip
+
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS imagemagick-dev libtool libgomp \
     && docker-php-ext-install calendar && docker-php-ext-enable calendar \
     && apk add --no-cache imagemagick mysql-client \
     && pecl install imagick  \
@@ -44,6 +49,8 @@ RUN set -ex \
     && apk --no-cache add icu icu-dev icu-libs \
     && docker-php-ext-install -j$(nproc) intl \
     && apk del icu-dev
+
+RUN apk add libgomp # for imagick
 
 RUN rm /usr/local/etc/php-fpm.d/*
 COPY php-fpm.d/www.conf /usr/local/etc/php-fpm.d/
