@@ -20,7 +20,7 @@ RUN apk add --no-cache --virtual .build-deps gettext-dev \
     && docker-php-ext-install -j$(nproc) gettext \
     && apk del -f .build-deps
 
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool \
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libzip-dev imagemagick-dev libtool libzip5 \
     && apk add --no-cache imagemagick mysql-client \
     && pecl install imagick  \
     && docker-php-ext-enable imagick \
