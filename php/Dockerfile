@@ -45,7 +45,7 @@ RUN set -ex \
     && docker-php-ext-install -j$(nproc) intl \
     && apk del icu-dev
 
-RUN apk add libgomp # for imagick
+RUN apk add libgomp libintl # for imagick and gettext
 
 RUN rm /usr/local/etc/php-fpm.d/*
 COPY php-fpm.d/www.conf /usr/local/etc/php-fpm.d/
