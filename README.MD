@@ -5,13 +5,8 @@
 
 Это репозиторий для информации и настроек поднятия техновики.
 
-В текущий момент она поднята в виде трёх docker контейнеров, docker-compose файл лежит тут же рядом в репозитории.
+В текущий момент она поднята в виде трёх docker контейнеров, документация по ним и docker compose лежит [тут](https://github.com/jehy/php-fpm-mediawiki).
 
-### Контейнеры:
-
-* Кастомный контейнер php 5.6 плюс необходимые расширения, Dockerfile лежит в этом репозитории и собирается тут же.
-* mysql 5.7
-* nginx - последней версии на 31.01.2024
 
 ### Перенос
 
@@ -24,22 +19,29 @@
 5. Выкинуть наружу порт от nginx, который слушает только `127.0.0.1:6602` - например, через другой nginx и proxy_pass
 6. Всё, вы великолепны!
 
-### Экспорт SQL бэкапа
-
-```bash
-docker exec CONTAINER /usr/bin/mysqldump -u tc --password=ПАРОЛЬ tc > backup.sql
-```
-
-### Импорт SQL бэкапа
-
-```bash
-cat backup.sql | docker exec -i techno-wiki-mysql mysql -utc -pПАРОЛЬ tc
-```
-
 ### Запуск служебных скриптов
 
 ```bash
-docker exec -i 80472b58d2d2 php /var/www/public_html/maintenance/rebuildImages.php
+# export sql backup
+docker exec mysql /usr/bin/mysqldump -u tc --password=ПАРОЛЬ tc > backup.sql
+
+# import SQL backup
+cat backup.sql | docker exec -i mysql mysql -utc -pПАРОЛЬ tc
+
+# rebuild images
+docker exec -i php php /var/www/public_html/maintenance/rebuildImages.php
+
+# enter container shell
+docker exec -it php sh
+
+#run update script
+cd /var/www/public_html/maintenance/
+php ./update.php
+
+# reinstall composer deps which are broken in gzip
+cd /var/www/public_html/
+rm ./vendor/* -rf
+composer install
 ```
 
 ### Тома этой конфигурации (volumes)
@@ -52,20 +54,9 @@ docker exec -i 80472b58d2d2 php /var/www/public_html/maintenance/rebuildImages.p
 ### Настройка почты
 
 Почта перенастроена через SMTP по [этой инструкции](https://www.mediawiki.org/wiki/Manual:$wgSMTP). Можно использовать любой подходящий сервис, выдающий SMTP креды.
-### Дальнейшие рекомендации
-Для того, чтобы вики не взломали, и чтобы не оказалось, что она стала необновляемой,
-нужно таки поднять её версию.
 
-Однако, при подъёме версии будут отваливаться скины и расширения.
+### AcessControl
 
-Поэтому, рекомендация такая:
-1. Делаем себе локальную копию
-2. Смотрим на [диаграмму совместимости](https://www.mediawiki.org/wiki/Compatibility) версий и читаем [инструкцию](https://www.mediawiki.org/wiki/Manual:Upgrading/ru) по обновлению
-3. Обновляем PHP, если нужно (можно поднимать версию через докер файл)
-4. Обновляем MySQL, если нужно (аналогично, через контейнер)
-5. Обновляем саму вики (накатываем свежую версию и дёргаем скрипт обновления)
-6. Проверяем вики - диффы истории, загрузку картинок, работу расширений, ошибки в логах
-7. Если всё ок - продолжаем
-8. Если не ок - дебажим и чиним или откатываемся :)
+Используется чуток поправленный стандартный [AccessControl](https://www.mediawiki.org/wiki/Extension:AccessControl) из [этого репозитория](https://github.com/wod-serial/AccessControl).
 
-Можно попробовать вариант "мне повезёт", и обновиться сразу на последнюю версию, но тогда будет сложно отлаживать, что именно всё сломало, так как это будет много.
+Теги доступа поправлены в дампе при помощи [этого скрипта](https://github.com/wod-serial/access-fixer).
