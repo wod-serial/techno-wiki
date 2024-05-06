@@ -1,10 +1,6 @@
-FROM php:alpine AS cacert
-
-FROM php:7.4-fpm-alpine
+FROM php:8.1-fpm-alpine
 
  # сертификаты в старом имадже протухли, так что воруем их из более нового
-
-COPY --from=cacert /etc/ssl /root/ssl
 
 #mediawiki нужен composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
