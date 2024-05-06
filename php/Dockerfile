@@ -5,8 +5,7 @@ FROM php:8.1-fpm-alpine
 #mediawiki нужен composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN mv /etc/ssl/openssl.cnf* /root/ssl && rm -rf /etc/ssl && mv /root/ssl /etc/ssl \
-  && pear update-channels \
+RUN pear update-channels \
   && pear install Mail Mail_Mime Net_SMTP
 
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev \
