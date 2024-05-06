@@ -9,7 +9,7 @@
 
 ### Контейнеры:
 
-* Кастомный контейнер php 5.6 плюс необходимые расширения, Dockerfile лежит в этом репозитории и собирается тут же.
+* Кастомный контейнер php 7.3 плюс необходимые расширения, Dockerfile лежит в этом репозитории и собирается тут же.
 * mysql 5.7
 * nginx - последней версии на 31.01.2024
 
@@ -24,22 +24,29 @@
 5. Выкинуть наружу порт от nginx, который слушает только `127.0.0.1:6602` - например, через другой nginx и proxy_pass
 6. Всё, вы великолепны!
 
-### Экспорт SQL бэкапа
-
-```bash
-docker exec CONTAINER /usr/bin/mysqldump -u tc --password=ПАРОЛЬ tc > backup.sql
-```
-
-### Импорт SQL бэкапа
-
-```bash
-cat backup.sql | docker exec -i techno-wiki-mysql mysql -utc -pПАРОЛЬ tc
-```
-
 ### Запуск служебных скриптов
 
 ```bash
-docker exec -i 80472b58d2d2 php /var/www/public_html/maintenance/rebuildImages.php
+# export sql backup
+docker exec mysql /usr/bin/mysqldump -u tc --password=ПАРОЛЬ tc > backup.sql
+
+# import SQL backup
+cat backup.sql | docker exec -i mysql mysql -utc -pПАРОЛЬ tc
+
+# rebuild images
+docker exec -i php php /var/www/public_html/maintenance/rebuildImages.php
+
+# enter container shell
+docker exec -it php sh
+
+#run update script
+cd /var/www/public_html/maintenance/
+php ./update.php
+
+# reinstall composer deps which are broken in gzip
+cd /var/www/public_html/
+rm ./vendor/* -rf
+composer install
 ```
 
 ### Тома этой конфигурации (volumes)
