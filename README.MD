@@ -53,7 +53,7 @@ composer install
 
 ### Настройка почты
 
-Почта перенастроена через SMTP по [этой инструкции](https://www.mediawiki.org/wiki/Manual:$wgSMTP). Можно использовать любой подходящий сервис, выдающий SMTP креды.
+Почта перенастроена через SMTP по [этой инструкции](https://www.mediawiki.org/wiki/Manual:$wgSMTP). Можно использовать любой подходящий сервис, выдающий SMTP креды - например, https://smtp2go.com/ .
 
 ### AcessControl
 
